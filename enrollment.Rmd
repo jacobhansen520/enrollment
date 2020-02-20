@@ -16,12 +16,14 @@ library(janitor)
 
 ```{r}
 enrollment <- read_excel("class_enrollment_summary_by_term2.18.20.xlsx", skip = 3) %>% 
-  clean_names() %>% 
-  filter(! is.na(course_name)) %>% 
-  group_by(course_department) %>% 
-  summarize(total_enroll = sum(total)) %>% 
-  arrange(desc(total_enroll))
-enrollment
+  clean_names()
 ```
 
-Next time: biggest NEW course
+```{r}
+old_enrollment <- read_excel("class_enrollment_summary_by_term_3.22.19_0.xlsx", skip = 3) %>% 
+  clean_names() %>% 
+  filter(! is.na(course_name))
+
+old_enrollment %>% 
+  anti_join(enrollment, by = c("course_id"))
+```
